@@ -13,26 +13,25 @@ def delay_print(s):
 
 #Card class
 class Card:
-    def __init__(self, name, type, moves, stats,  score=0):
+    def __init__(self, name, type, moves, stats,  goals=0):
         self.name = name
         self.type = type
         self.moves = moves
         self.attack = stats['ATTACK']
         self.defense = stats['DEFENSE']
-        self.score = score
-        self.goals = 0
+        self.goals = goals
 
     def match(self, OpponentCard):
         print("-------FOOTBALL MATCH BEGINS-----------")
-        print(f"\n{self.name}")
-        print(f"\nTYPE/", self.type)
-        print(f"\nATTACK/", self.attack)
-        print(f"\nDEFENSE/", self.defense)
-        print(f"\nVS.")
-        print(f"\n{OpponentCard.name}")
-        print(f"\nTYPE/", OpponentCard.type)
-        print(f"\nATTACK/", OpponentCard.attack)
-        print(f"\nDEFENSE/", OpponentCard.defense)
+        print(f"{self.name}")
+        print(f"TYPE/", self.type)
+        print(f"ATTACK/", self.attack)
+        print(f"DEFENSE/", self.defense)
+        print(f"\nVS.\n")
+        print(f"{OpponentCard.name}")
+        print(f"TYPE/", OpponentCard.type)
+        print(f"ATTACK/", OpponentCard.attack)
+        print(f"DEFENSE/", OpponentCard.defense)
         time.sleep(2)
 
         version = ['Def', 'Mid', 'Atk']
@@ -49,73 +48,83 @@ class Card:
                     OpponentCard.defense *= 2
                     self.attack /= 2
                     self.defense /= 2
-                    string1_attack  = '\nKeeper saves it!'
-                    string2_attack = '\nWhat a goal!'
+                    string1_attack  = '\nDeflection!'
+                    string2_attack = '\nWhat a shot!'
 
                 if OpponentCard.type == version[(i+2) % 3]:
                     self.attack *= 2
                     self.defense *= 2
                     OpponentCard.attack /= 2
                     OpponentCard.defense /= 2
-                    string1_attack = '\nWhat a goal!'
-                    string2_attack = '\nKeeper saves it!'
+                    string1_attack = '\nWhat a shot!'
+                    string2_attack = '\nDeflection!'
 
         while (self.goals < 5 and OpponentCard.goals < 5):
             print(f"{self.name}\t\tGOALS\t{self.goals}")
             print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
 
-            print (f"{self.name}!")
+            print (f"Player 1 plays {self.name}!")
             for i, x in enumerate(self.moves):
                 print(f"{i+1}.", x)
-                index = int(input('\npick a move: '))
-                delay_print(f"{self.name} {self.moves[index-1]}!")
-                time.sleep(1)
-                delay_print(string1_attack)
+            index = int(input('Pick a move: '))
+            delay_print(f"{self.name} {self.moves[index-1]}!")
+            time.sleep(1)
+            delay_print(string1_attack)
 
-                #determine goal
-                OpponentCard.goals -= self.attack
+            #determine goal
+            goal_evaluate = OpponentCard.defense =- self.attack
+            if goal_evaluate >0 :
                 OpponentCard.score += 1
+                delay_print(f"\n{self.name} is on the attack!")
+                delay_print(f"...")
+                delay_print(f"\nIts a goal!")
+            else:
+                delay_print(f"\nKeeper saves it!")
 
-                #set score
+            #set score
 
-                time.sleep(1)
-                print(f"{self.name}\t\tGOALS\t{self.goals}")
-                print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
-                time.sleep(.5)
+            time.sleep(1)
+            print(f"{self.name}\t\tGOALS\t{self.goals}")
+            print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
+            time.sleep(.5)
 
-                #check to see if match is over
-                if OpponentCard.goals >=5:
-                    delay_print("\n..." + OpponentCard.name + ' loses.')
-                    break
+            #check to see if match is over
+            if OpponentCard.goals >=5:
+                delay_print("\n..." + OpponentCard.name + ' loses.')
+                break
 
-                #OpponentCard turn
+            #OpponentCard turn
 
-                print(f"{OpponentCard.name}!")
-                for i, x in enumerate(OpponentCard.moves):
-                    print(f"{i + 1}.", x)
-                    index = int(input('\npick a move: '))
-                    delay_print(f"{OpponentCard.name} {OpponentCard.moves[index - 1]}!")
-                    time.sleep(1)
-                    delay_print(string2_attack)
+            print(f"Player 2 plays {OpponentCard.name}!")
+            for i, x in enumerate(OpponentCard.moves):
+                print(f"{i + 1}.", x)
+            index = int(input('Pick a move: '))
+            delay_print(f"{OpponentCard.name} {OpponentCard.moves[index - 1]}!")
+            time.sleep(1)
+            delay_print(string2_attack)
 
-                    # determine goal
-                    self.goals -= OpponentCard.attack
-                    self.score += 1
+            # determine goal
+            goal_evaluate = self.defense =- OpponentCard.attack
+            if goal_evaluate > 0:
+                self.score += 1
+                delay_print(f"\nIts a goal!")
+            else:
+                delay_print(f"\nKeeper saves it!")
 
-                    # set score
+            # set score
 
-                    time.sleep(1)
-                    print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
-                    print(f"{self.name}\t\tGOALS\t{self.goals}")
-                    time.sleep(.5)
+            time.sleep(1)
+            print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
+            print(f"{self.name}\t\tGOALS\t{self.goals}")
+            time.sleep(.5)
 
-                    # check to see if match is over
-                    if self.goals >= 5:
-                        delay_print("\n..." + self.name + ' loses.')
-                        break
+            # check to see if match is over
+            if self.goals >= 5:
+                delay_print("\n..." + self.name + ' loses.')
+                break
 
-                exp = numpy.random.choice(5000)
-                delay_print(f"\nYou gained {exp}. EXP")
+        exp = numpy.random.choice(5000)
+        delay_print(f"\nYou gained {exp}. EXP")
 
 if __name__ == '__main__':
     #create players
