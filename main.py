@@ -34,7 +34,7 @@ class Card:
         print(f"DEFENSE/", OpponentCard.defense)
         time.sleep(2)
 
-        version = ['Def', 'Mid', 'Atk']
+        version = ['Def', 'Atk', 'Mid']
         for i, k in enumerate(version):
             if self.type == k:
                 #both are same type
@@ -58,10 +58,13 @@ class Card:
                     OpponentCard.defense /= 2
                     string1_attack = '\nWhat a shot!'
                     string2_attack = '\nDeflection!'
-
+        turn = 1
         while (self.goals < 5 and OpponentCard.goals < 5):
+            print(f"\nTurn Number: {turn}")
+            print(f"Scores: ")
             print(f"{self.name}\t\tGOALS\t{self.goals}")
             print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
+            print(f"--------------------------------------------------")
 
             print (f"Player 1 plays {self.name}!")
             for i, x in enumerate(self.moves):
@@ -72,24 +75,28 @@ class Card:
             delay_print(string1_attack)
 
             #determine goal
-            goal_evaluate = OpponentCard.defense =- self.attack
-            if goal_evaluate >0 :
-                OpponentCard.score += 1
-                delay_print(f"\n{self.name} is on the attack!")
-                delay_print(f"...")
-                delay_print(f"\nIts a goal!")
+            goal_evaluate = self.defense =- OpponentCard.attack
+            if goal_evaluate >=0 :
+                self.goals += 1
+                delay_print(f"\n{self.name} with a belter!")
+                delay_print(f"\n...")
+                time.sleep(2)
+                delay_print(f"\nIts a goal!\n")
             else:
-                delay_print(f"\nKeeper saves it!")
+                delay_print(f"\nKeeper saves it!\n")
 
             #set score
 
             time.sleep(1)
+            print(f"Scores: ")
             print(f"{self.name}\t\tGOALS\t{self.goals}")
             print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
+            print(f"--------------------------------------------------")
+
             time.sleep(.5)
 
             #check to see if match is over
-            if OpponentCard.goals >=5:
+            if self.goals >=2:
                 delay_print("\n..." + OpponentCard.name + ' loses.')
                 break
 
@@ -104,32 +111,41 @@ class Card:
             delay_print(string2_attack)
 
             # determine goal
-            goal_evaluate = self.defense =- OpponentCard.attack
-            if goal_evaluate > 0:
-                self.score += 1
-                delay_print(f"\nIts a goal!")
+            goal_evaluate = OpponentCard.defense =- self.attack
+            if goal_evaluate >=0:
+                OpponentCard.goals += 1
+                delay_print(f"\n{OpponentCard.name} with a belter!")
+                delay_print(f"\n...")
+                time.sleep(2)
+                delay_print(f"\nIts a goal!\n")
             else:
-                delay_print(f"\nKeeper saves it!")
+                delay_print(f"\nKeeper saves it!\n")
 
             # set score
 
             time.sleep(1)
+            print(f"Scores: ")
             print(f"{OpponentCard.name}\t\tGOALS\t{OpponentCard.goals}")
             print(f"{self.name}\t\tGOALS\t{self.goals}")
+            print(f"--------------------------------------------------")
+
             time.sleep(.5)
 
             # check to see if match is over
-            if self.goals >= 5:
+            if OpponentCard.goals >= 2:
                 delay_print("\n..." + self.name + ' loses.')
                 break
-
+            turn += 1
         exp = numpy.random.choice(5000)
         delay_print(f"\nYou gained {exp}. EXP")
 
 if __name__ == '__main__':
     #create players
 
-    Ronaldo = Card('Ronaldo', 'Atk', ['MAke a run','Tackle', 'Shoot', 'Cross', 'Header'], {'ATTACK':5, 'DEFENSE':1})
-    Cambiasso = Card('Cambiasso', 'Mid', ['MAke a run','Tackle', 'Shoot', 'Cross', 'Header'], {'ATTACK':3, 'DEFENSE':4})
+    Ronaldo = Card('Cristiano Ronaldo', 'Atk', ['Makes a run','Tackles', 'Shoots', 'Crosses', 'Headers'], {'ATTACK':5, 'DEFENSE':1})
+    Cambiasso = Card('Esteban Cambiasso', 'Mid', ['Makes a run','Tackles', 'Shoots', 'Crosses', 'Headers'], {'ATTACK':3, 'DEFENSE':4})
+    Vidal = Card('Arturo Vidal', 'Mid', ['Makes a run','Tackles', 'Shoots', 'Crosses', 'Headers'], {'ATTACK':1, 'DEFENSE':0})
+    Barzagli = Card('Andrea Barzagli', 'Def', ['Makes a run','Tackles', 'Shoots', 'Crosses', 'Headers'], {'ATTACK':0, 'DEFENSE':1})
 
-Ronaldo.match(Cambiasso)
+
+Ronaldo.match(Barzagli)
